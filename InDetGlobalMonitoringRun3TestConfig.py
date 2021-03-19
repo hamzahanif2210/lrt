@@ -66,48 +66,51 @@ def InDetGlobalMonitoringRun3TestConfig(flags):
         InDetGlobalTrackMonAlgCfg(helper, inDetGlobalTrackMonAlg, **kwargsInDetGlobalTrackMonAlg)
         ########### here ends InDetGlobalTrackMonAlg ###########
 
+#LRT
+
         ########### here begins InDetGlobalLRTMonAlg ###########
         kwargsInDetGlobalLRTMonAlg = { 
             'DoIBL' : True,                       #InDetFlags.doIBL(), #Turn on/off IBL histograms 
-            'LRTName'  : 'CombinedInDetLRTs',  #Until new config ready
-            'LRTName2' : 'CombinedInDetLRTs',  #Until new config ready
-            'LRTName3' : 'CombinedInDetLRTs',  #Until new config ready
+            'TrackName'  : 'CombinedInDetTracks',  #Until new config ready
+            'TrackName2' : 'CombinedInDetTracks',  #Until new config ready
+            'TrackName3' : 'CombinedInDetTracks',  #Until new config ready
         }
         
         
         from InDetGlobalMonitoringRun3Test.InDetGlobalLRTMonAlgCfg import InDetGlobalLRTMonAlgCfg 
 
-        inDetGlobalLRTMonAlg = helper.addAlgorithm(CompFactory.InDetGlobalLRTMonAlg, 'InDetGlobalLRTMonAlg')
+        InDetGlobalLRTMonAlg = helper.addAlgorithm(CompFactory.InDetGlobalLRTMonAlg, 'InDetGlobalLRTMonAlg')
         for k, v in kwargsInDetGlobalLRTMonAlg.items():
-            setattr(inDetGlobalLRTMonAlg, k, v)
+            setattr(InDetGlobalLRTMonAlg, k, v)
 
-        inDetGlobalLRTMonAlg.LRTSelectionTool = CompFactory.InDet.InDetLRTSelectionTool('InDetGlobalLRTMonAlg_LRTSelectionTool')
-        inDetGlobalLRTMonAlg.LRTSelectionTool.UseTrkLRTTools = True
-        inDetGlobalLRTMonAlg.LRTSelectionTool.CutLevel         = "TightPrimary"
-        inDetGlobalLRTMonAlg.LRTSelectionTool.maxNPixelHoles   = 1
-        inDetGlobalLRTMonAlg.LRTSelectionTool.minPt            = 5000
-        #        InDetGlobalLRTMonAlg.Baseline_LRTSelectionTool.LRTSummaryTool = InDetLRTSummaryTool
-        #        InDetGlobalLRTMonAlg.Baseline_LRTSelectionTool.Extrapolator     = InDetExtrapolator
+        InDetGlobalLRTMonAlg.TrackSelectionTool = CompFactory.InDet.InDetTrackSelectionTool('InDetGlobalLRTMonAlg_TrackSelectionTool')
+        InDetGlobalLRTMonAlg.TrackSelectionTool.UseTrkTrackTools = True
+        InDetGlobalLRTMonAlg.TrackSelectionTool.CutLevel         = "TightPrimary"
+        InDetGlobalLRTMonAlg.TrackSelectionTool.maxNPixelHoles   = 1
+        InDetGlobalLRTMonAlg.TrackSelectionTool.minPt            = 5000
+        #        InDetGlobalLRTMonAlg.Baseline_TrackSelectionTool.TrackSummaryTool = InDetTrackSummaryTool
+        #        InDetGlobalLRTMonAlg.Baseline_TrackSelectionTool.Extrapolator     = InDetExtrapolator
         #
-        inDetGlobalLRTMonAlg.Tight_LRTSelectionTool = CompFactory.InDet.InDetLRTSelectionTool('InDetGlobalLRTMonAlg_TightLRTSelectionTool')
-        inDetGlobalLRTMonAlg.Tight_LRTSelectionTool.UseTrkLRTTools = True
-        inDetGlobalLRTMonAlg.Tight_LRTSelectionTool.CutLevel         = "TightPrimary"
-        inDetGlobalLRTMonAlg.Tight_LRTSelectionTool.minPt            = 5000
-        #        InDetGlobalLRTMonAlg.Tight_LRTSelectionTool.LRTSummaryTool = InDetLRTSummaryTool
-        #        InDetGlobalLRTMonAlg.Tight_LRTSelectionTool.Extrapolator     = InDetExtrapolator
+        InDetGlobalLRTMonAlg.Tight_TrackSelectionTool = CompFactory.InDet.InDetTrackSelectionTool('InDetGlobalLRTMonAlg_TightTrackSelectionTool')
+        InDetGlobalLRTMonAlg.Tight_TrackSelectionTool.UseTrkTrackTools = True
+        InDetGlobalLRTMonAlg.Tight_TrackSelectionTool.CutLevel         = "TightPrimary"
+        InDetGlobalLRTMonAlg.Tight_TrackSelectionTool.minPt            = 5000
+        #        InDetGlobalLRTMonAlg.Tight_TrackSelectionTool.TrackSummaryTool = InDetTrackSummaryTool
+        #        InDetGlobalLRTMonAlg.Tight_TrackSelectionTool.Extrapolator     = InDetExtrapolator
         
 
         # Run 3 configs - stolen from SCT
-        from SCT_Monitoring.LRTSummaryToolWorkaround import LRTSummaryToolWorkaround
-        InDetLRTSummaryTool = acc.popToolsAndMerge(LRTSummaryToolWorkaround(flags))
-        inDetGlobalLRTMonAlg.LRTSummaryTool = InDetLRTSummaryTool
-        inDetGlobalLRTMonAlg.LRTSelectionTool.LRTSummaryTool = InDetLRTSummaryTool
-        inDetGlobalLRTMonAlg.LRTSelectionTool.Extrapolator     = acc.getPublicTool("InDetExtrapolator")
-        inDetGlobalLRTMonAlg.Tight_LRTSelectionTool.LRTSummaryTool = InDetLRTSummaryTool
-        inDetGlobalLRTMonAlg.Tight_LRTSelectionTool.Extrapolator     = acc.getPublicTool("InDetExtrapolator")
+        from SCT_Monitoring.TrackSummaryToolWorkaround import TrackSummaryToolWorkaround
+        InDetTrackSummaryTool = acc.popToolsAndMerge(TrackSummaryToolWorkaround(flags))
+        InDetGlobalLRTMonAlg.TrackSummaryTool = InDetTrackSummaryTool
+        InDetGlobalLRTMonAlg.TrackSelectionTool.TrackSummaryTool = InDetTrackSummaryTool
+        InDetGlobalLRTMonAlg.TrackSelectionTool.Extrapolator     = acc.getPublicTool("InDetExtrapolator")
+        InDetGlobalLRTMonAlg.Tight_TrackSelectionTool.TrackSummaryTool = InDetTrackSummaryTool
+        InDetGlobalLRTMonAlg.Tight_TrackSelectionTool.Extrapolator     = acc.getPublicTool("InDetExtrapolator")
         
-        InDetGlobalLRTMonAlgCfg(helper, inDetGlobalLRTMonAlg, **kwargsInDetGlobalLRTMonAlg)
+        InDetGlobalLRTMonAlgCfg(helper, InDetGlobalLRTMonAlg, **kwargsInDetGlobalLRTMonAlg)
         ########### here ends InDetGlobalLRTMonAlg ###########
+
 
         
     # run on ESD
