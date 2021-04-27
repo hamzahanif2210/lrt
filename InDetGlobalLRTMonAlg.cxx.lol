@@ -101,6 +101,7 @@ StatusCode InDetGlobalLRTMonAlg::initialize() {
   
   ATH_CHECK( m_CombinedTracksName.initialize() );
   ATH_CHECK( m_ForwardTracksName.initialize() );
+  ATH_CHECK( m_trackContainerName.initialize() );
   
   ATH_CHECK( m_clustersKey.initialize() );  // maybe not needed
   
@@ -134,6 +135,16 @@ StatusCode InDetGlobalLRTMonAlg::fillHistograms( const EventContext& ctx ) const
     ATH_MSG_DEBUG("InDetGlobalMonitoringRun3Test: Track container "<< combined_tracks.name() <<" is found.");
   }
   
+  
+  auto trackContainerName = SG::makeHandle(m_trackContainerName, ctx);
+
+  if ( !(trackContainerName.isValid()) ) {
+    ATH_MSG_INFO("InDetGlobalMonitoringRun3Test: LRT Track container SFU  "<< m_trackContainerName.key() << " could not be found.");
+    return StatusCode::RECOVERABLE;
+  } else {
+    ATH_MSG_INFO("InDetGlobalMonitoringRun3Test: LRT Track container SFU "<< trackContainerName.name() <<" is found.");
+  }
+
   // counters
   int nBase = 0;
   int nTight = 0;
@@ -142,7 +153,7 @@ StatusCode InDetGlobalLRTMonAlg::fillHistograms( const EventContext& ctx ) const
   int nNoTRText = 0;
   
   
-  for (const Trk::Track* track: *combined_tracks) {
+  for (const Trk::Track* track: *trackContainerName) {
     
     if ( !track || track->perigeeParameters() == 0 )
       {
