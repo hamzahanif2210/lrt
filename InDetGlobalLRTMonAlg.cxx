@@ -125,7 +125,7 @@ StatusCode InDetGlobalLRTMonAlg::fillHistograms( const EventContext& ctx ) const
   
   // retrieving tracks
   auto combined_tracks = SG::makeHandle(m_CombinedTracksName, ctx);
-  
+  ATH_MSG_INFO("Simon Fraser University");
   // check for tracks
   if ( !(combined_tracks.isValid()) ) {
     ATH_MSG_ERROR("InDetGlobalMonitoringRun3Test: Track container "<< m_CombinedTracksName.key() << " could not be found.");
